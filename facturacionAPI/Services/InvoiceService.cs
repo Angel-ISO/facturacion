@@ -2,7 +2,6 @@ using Domain.Entities;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
-using System.IO;
 
 namespace facturacionAPI.Services
 {
@@ -22,7 +21,6 @@ namespace facturacionAPI.Services
     var document = new Document(pdfDocument);
 
     document.Add(new Paragraph("Su Factura"));
-
     document.Add(new Paragraph("Número de factura: " + invoice.Id));
     document.Add(new Paragraph("Fecha: " + invoice.Date));
 
@@ -52,9 +50,6 @@ namespace facturacionAPI.Services
 
 
 
-
-
-
-
     }
 }
+ 

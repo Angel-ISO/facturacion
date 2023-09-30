@@ -5,6 +5,9 @@ using facturacionAPI.Dtos;
 using Domain.Entities;
 using facturacionAPI.Helpers;
 using facturacionAPI.Services;
+/* using iText.Kernel.Pdf;
+using iText.Layout.Element;
+using iText.Layout; */
 
 namespace facturacionAPI.Controllers;
 
@@ -20,7 +23,7 @@ namespace facturacionAPI.Controllers;
     private readonly PdfInvoiceService _pdfService; 
 
 
-    public InvoiceController(IUnitOfWork unitOfWork, IMapper mapper, PdfInvoiceService pdfService)
+    public InvoiceController(IUnitOfWork unitOfWork, IMapper mapper,PdfInvoiceService pdfService )
     {
         this._unitofwork = unitOfWork;
         _mapper = mapper;
@@ -50,6 +53,22 @@ namespace facturacionAPI.Controllers;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     [HttpGet("{id}/GeneratePDF")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -64,9 +83,10 @@ namespace facturacionAPI.Controllers;
         var pdfBytes = _pdfService.GenerateInvoicePdf(invoice); 
 
         return File(pdfBytes, "application/pdf", "factura.pdf");
-    }
+    } 
 
-  
+
+
 
 
 
@@ -110,4 +130,78 @@ namespace facturacionAPI.Controllers;
         await _unitofwork.SaveAsync();
         return NoContent();
     }
+
+
+
+
+
+
+
+
+/* 
+
+
+[HttpGet("{id}/GeneratePDF")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+public async Task<IActionResult> GeneratePDF(int id)
+{
+    var invoice = await _unitofwork.Invoices.GetByIdAsync(id);
+    if (invoice == null)
+    {
+        return NotFound();
+    }
+
+    try
+    {
+        using var memoryStream = new MemoryStream();
+        var pdfWriter = new PdfWriter(memoryStream);
+        var pdfDocument = new PdfDocument(pdfWriter);
+        var document = new Document(pdfDocument);
+
+        document.Add(new Paragraph("Su Factura"));
+        document.Add(new Paragraph("Número de factura: " + invoice.Id));
+        document.Add(new Paragraph("Fecha: " + invoice.Date));
+
+        if (invoice.Details != null)
+        {
+            document.Add(new Paragraph("Detalles de los productos:"));
+            foreach (var detail in invoice.Details)
+            {
+                if (detail.Product != null) 
+                {
+                    document.Add(new Paragraph("Producto: " + detail.Product.Name));
+                    document.Add(new Paragraph("Cantidad: " + detail.Quantity));
+                    document.Add(new Paragraph("Precio unitario: " + detail.Product.Price.ToString("C")));
+                    document.Add(new Paragraph("Subtotal: " + (detail.Quantity * detail.Product.Price).ToString("C")));
+                }
+            }
+        }
+
+        var totalAmount = invoice.Details?.Sum(detail => detail.Quantity * detail.Product.Price) ?? 0;
+        document.Add(new Paragraph("Total: " + totalAmount.ToString("C")));
+
+        document.Close();
+
+        var pdfBytes = memoryStream.ToArray();
+        return File(pdfBytes, "application/pdf", "factura.pdf");
+    }
+    catch (Exception ex)
+    {
+        // Manejar cualquier error que pueda ocurrir al generar el PDF.
+        return BadRequest($"Error al generar el PDF: {ex.Message}");
+    }
+}
+
+ */
+
+
+
+
+
+
+
+
+
+
 }
