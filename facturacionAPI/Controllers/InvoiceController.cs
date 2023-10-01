@@ -5,6 +5,8 @@ using facturacionAPI.Dtos;
 using Domain.Entities;
 using facturacionAPI.Helpers;
 using facturacionAPI.Services;
+using iText.Layout;
+using iText.Kernel.Pdf;
 /* using iText.Kernel.Pdf;
 using iText.Layout.Element;
 using iText.Layout; */
@@ -56,6 +58,22 @@ namespace facturacionAPI.Controllers;
 
 
 
+[HttpGet("GenerateAllInvoicesPDF/{customerId}")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+public async Task<IActionResult> GenerateAllInvoicesPDF(int customerId)
+{
+    var customerInvoices = await _unitofwork.Invoices.GetInvoicesByCustomerIdAsync(customerId);
+
+    if (customerInvoices == null || !customerInvoices.Any())
+    {
+        return NotFound();
+    }
+
+    var pdfBytes = _pdfService.GenerateAllInvoicesPdf(customerInvoices);
+
+    return File(pdfBytes, "application/pdf", "facturas.pdf");
+}
 
 
 
@@ -69,7 +87,8 @@ namespace facturacionAPI.Controllers;
 
 
 
-    [HttpGet("{id}/GeneratePDF")]
+
+    /* [HttpGet("{id}/GeneratePDF")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GeneratePDF(int id)
@@ -85,7 +104,7 @@ namespace facturacionAPI.Controllers;
         return File(pdfBytes, "application/pdf", "factura.pdf");
     } 
 
-
+ */
 
 
 

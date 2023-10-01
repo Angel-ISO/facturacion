@@ -20,4 +20,18 @@ public class InvoiceDetailRepository  : GenericRepository<InvoiceDetail>, IInvoi
                                 .Include(p => p.Invoice)
                                 .ToListAsync();
     }
-}
+
+/* public async Task<IEnumerable<InvoiceDetail>> GetByInvoiceIdAsync(int invoiceId)
+    {
+        return await _Context.Set<InvoiceDetail>()
+            .Include(p => p.Product)
+            .Include(p => p.Invoice)
+            .Where(detail => detail.InvoiceId == invoiceId)
+            .ToListAsync();
+            
+             }
+            */
+    }
+
+
+
