@@ -146,6 +146,8 @@ Cabe aclarar que el proyecto no está 100% culminado. Estar atento a esta docume
 
 para soporte y consultar adicionales, email angelgabrielorteg@gmail.com o enviame solicitud por discord🥰!
 
+video explicacion del proyecto: https://youtu.be/9stNVynT_6U
+
 ## Authors
 
 - [@Angel-ISO](https://www.github.com/Angel-ISO)
